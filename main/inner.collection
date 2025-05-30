@@ -1,0 +1,36 @@
+name: "inner"
+instances {
+  id: "camera"
+  prototype: "/main/camera/camera.go"
+  position {
+    z: 100.0
+  }
+}
+scale_along_z: 0
+embedded_instances {
+  id: "go"
+  data: "components {\n"
+  "  id: \"inner\"\n"
+  "  component: \"/main/inner.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"test\\\"\\n"
+  "material: \\\"/test_material/a/a_test.material\\\"\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/test.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "ui"
+  data: "components {\n"
+  "  id: \"test\"\n"
+  "  component: \"/main/test.gui\"\n"
+  "}\n"
+  ""
+}

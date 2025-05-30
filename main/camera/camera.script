@@ -1,0 +1,50 @@
+local Utils = require("main.camera.utils")
+
+local MSG_FOLLOW = hash("follow")
+local MSG_UNFOLLOW = hash("unfollow")
+local MSG_CAMERA_SHAKE = hash("camera_shake")
+local MSG_CAMERA_SHAKE_INTERRUPT = hash("camera_shake_interrupt")
+
+local function setup_camera()
+	local viewport_size = Utils.viewport_size
+	local windows_size = Utils.get_window_size()
+
+	local windows_aspect_ratio = windows_size.width / windows_size.height
+	local viewport_aspect_ratio = viewport_size.width / viewport_size.height
+
+	local zoom = Utils.calculate_zoom_level()
+
+	if windows_aspect_ratio < viewport_aspect_ratio then
+		local height_scaled = viewport_size.height * windows_size.width / viewport_size.width
+		local y_offset = height_scaled / 2 - windows_size.height
+
+		go.set(".", "position.y", 0)
+	else
+		go.set(".", "position.y", 0)
+	end
+
+	go.set("#camera", "orthographic_zoom", zoom)
+end
+
+
+function init(self)
+	msg.post("#camera", "acquire_camera_focus")
+	msg.post("@render:", "use_camera_projection")
+
+	setup_camera()
+	timer.delay(0.1, false, function()
+		setup_camera()
+	end)
+
+	window.set_listener(function(self, event, data)
+		if event == window.WINDOW_EVENT_RESIZED then
+		end
+	end)
+end
+
+function on_message(self, message_id, message, sender)
+end
+
+function on_reload(self)
+	setup_camera()
+end
